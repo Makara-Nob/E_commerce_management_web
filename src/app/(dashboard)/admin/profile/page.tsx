@@ -23,12 +23,16 @@ import { UserModel } from "@/models/dashboard/user/plateform-user/user.response"
 import {
   getUserProfileService,
   updateUserProfileService,
+  deleteAccountService,
 } from "@/services/dashboard/user/plateform-user/plateform-user.service";
 import ChangePasswordModal from "@/components/shared/modal/change-password-modal";
 import { UpdateUserRequest } from "@/models/dashboard/user/plateform-user/user.request";
 import { useRouter } from "next/navigation";
 import { AppToast } from "@/components/shared/common/app-toast";
 import { Textarea } from "@/components/ui/textarea";
+import { clearToken } from "@/utils/local-storage/token";
+import { clearUserInfo } from "@/utils/local-storage/userInfo";
+import { clearRoles } from "@/utils/local-storage/roles";
 import axios from "axios";
 
 // Form data interface
@@ -306,6 +310,48 @@ export default function UserProfilePage() {
       );
     } finally {
       setTelegramLoading(false);
+    }
+  };
+
+  // Handle Delete Account
+  const handleDeleteAccount = async () => {
+    // Basic browser confirmation
+    if (
+      !window.confirm(
+        "Are you sure you want to delete your account? This action is permanent and cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await deleteAccountService();
+
+      AppToast({
+        type: "success",
+        message: "Account deleted successfully. We're sorry to see you go.",
+        duration: 5000,
+        position: "top-right",
+      });
+
+      // Clear session
+      clearToken();
+      clearUserInfo();
+      clearRoles();
+
+      // Redirect to login
+      router.push("/login");
+    } catch (error: any) {
+      console.error("Error deleting account:", error);
+      AppToast({
+        type: "error",
+        message: error?.message || "Failed to delete account. Please try again.",
+        duration: 3000,
+        position: "top-right",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -719,8 +765,20 @@ export default function UserProfilePage() {
                       Permanently delete your account and all data
                     </p>
                   </div>
-                  <Button variant="destructive" size="sm">
-                    Delete Account
+                  <Button 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={handleDeleteAccount}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      "Delete Account"
+                    )}
                   </Button>
                 </div>
               </CardContent>

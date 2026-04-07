@@ -68,8 +68,8 @@ export async function updateUserService(
 
 export async function updateUserProfileService(data: UpdateUserRequest) {
   try {
-    const response = await axiosClientWithAuth.put(
-      `/api/v1/users/profile`,
+    const response = await axiosClientWithAuth.post(
+      `/api/v1/user/profile`,
       data
     );
     return response.data.data;
@@ -107,7 +107,7 @@ export const AdminChangePasswordService = async (
 export const ChangePasswordService = async (data: ChangePasswordModel) => {
   try {
     const response = await axiosClientWithAuth.post(
-      `/api/v1/users/change-password`,
+      `/api/v1/user/change-password`,
       data
     );
 
@@ -126,7 +126,7 @@ export const ChangePasswordService = async (data: ChangePasswordModel) => {
 
 export async function getUserProfileService() {
   try {
-    const response = await axiosClientWithAuth.get(`/api/v1/users/profile`);
+    const response = await axiosClientWithAuth.get(`/api/v1/user/profile`);
     return response.data.data;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
@@ -139,13 +139,26 @@ export async function getUserProfileService() {
 
 export async function deletedUserService(id: string) {
   try {
-    const response = await axiosClientWithAuth.delete(`/api/v1/users/${id}`);
+    const response = await axiosClientWithAuth.delete(`/api/v1/user/${id}`);
     return response.data.data;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {
       throw new Error(error.response.data.message);
     }
     console.error("Error deleting user:", error);
+    throw error;
+  }
+}
+
+export async function deleteAccountService() {
+  try {
+    const response = await axiosClientWithAuth.delete(`/api/v1/auth/delete-account`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    }
+    console.error("Error deleting account:", error);
     throw error;
   }
 }

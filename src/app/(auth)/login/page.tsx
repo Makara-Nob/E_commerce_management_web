@@ -31,7 +31,7 @@ export default function LoginPage() {
 
   // Create form schema
   const formSchema = z.object({
-    userIdentifier: z.string().min(1, "Email or username is required"),
+    username: z.string().min(1, "Email or username is required"),
     password: z.string().min(6, {
       message: "Password must be at least 6 characters",
     }),
@@ -42,7 +42,7 @@ export default function LoginPage() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userIdentifier: "phatmenghor19@gmail.com",
+      username: "admin@gmail.com",
       password: "88889999",
     },
   });
@@ -51,7 +51,7 @@ export default function LoginPage() {
     try {
       const result = await dispatch(
         loginService({
-          userIdentifier: values.userIdentifier || "",
+          username: values.username || "",
           password: values.password,
         })
       ).unwrap();
@@ -103,7 +103,7 @@ export default function LoginPage() {
                 {/* Email/Username Field */}
                 <FormField
                   control={form.control}
-                  name="userIdentifier"
+                  name="username"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-700">
@@ -115,7 +115,7 @@ export default function LoginPage() {
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                           <Input
                             {...field}
-                            id="userIdentifier"
+                            id="username"
                             type="text"
                             placeholder="name@example.com"
                             disabled={isLoading}

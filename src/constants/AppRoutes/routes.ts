@@ -37,6 +37,8 @@ export const ROUTES = {
     PAYMENT: "/admin/payment",
     USERS_BUSINESS: "/admin/users",
     CUSTOMER_USER: "/admin/customer-user",
+    PRODUCTS: "/admin/products",
+    CATEGORIES: "/admin/categories",
   },
 } as const;
 
@@ -69,22 +71,30 @@ export const sidebarItems: SidebarItem[] = [
         title: "Business",
         href: ROUTES.DASHBOARD.BUSINESS,
       },
+      // {
+      //   title: "Subscription Plan",
+      //   href: ROUTES.DASHBOARD.SUBSCRIPTION_PLAN,
+      // },
+      // {
+      //   title: "Subscriptions",
+      //   href: ROUTES.DASHBOARD.SUBSCRIPTION,
+      // },
+      // {
+      //   title: "Exchange Rates ",
+      //   href: ROUTES.DASHBOARD.EXCHANGE_RATE,
+      // },
       {
-        title: "Subscription Plan",
-        href: ROUTES.DASHBOARD.SUBSCRIPTION_PLAN,
+        title: "Products",
+        href: ROUTES.DASHBOARD.PRODUCTS,
       },
       {
-        title: "Subscriptions",
-        href: ROUTES.DASHBOARD.SUBSCRIPTION,
+        title: "Categories",
+        href: ROUTES.DASHBOARD.CATEGORIES,
       },
-      {
-        title: "Exchange Rates ",
-        href: ROUTES.DASHBOARD.EXCHANGE_RATE,
-      },
-      {
-        title: "Payment",
-        href: ROUTES.DASHBOARD.PAYMENT,
-      },
+      // {
+      //   title: "Payment",
+      //   href: ROUTES.DASHBOARD.PAYMENT,
+      // },
     ],
   },
   {

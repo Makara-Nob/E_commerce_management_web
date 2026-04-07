@@ -32,15 +32,14 @@ interface RootLayoutProps {
 // Enhanced metadata (removed viewport - now separate export)
 export const metadata = {
   title: {
-    template: "%s | Menu Scanner",
-    default: "Menu Scanner - Professional Restaurant Management",
+    template: "%s | Nara",
+    default: "Nara - e-commerce Management",
   },
-  description:
-    "Professional dashboard for menu scanning and restaurant management",
-  keywords: ["dashboard", "menu", "scanner", "management", "restaurant"],
-  authors: [{ name: "Menu Scanner Team" }],
-  creator: "Menu Scanner",
-  publisher: "Menu Scanner",
+  description: "Professional dashboard for e-commerce management",
+  keywords: ["dashboard", "e-commerce", "scanner", "management", "restaurant"],
+  authors: [{ name: "E-commerce team" }],
+  creator: "E-commerce team",
+  publisher: "Makara Nob",
   formatDetection: {
     email: false,
     address: false,
@@ -89,8 +88,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <ClientProviders>
           <PageProgressBar />
           <ToastProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <div className="flex-1">{children}</div>
+            <div className="relative flex h-screen flex-col overflow-hidden">
+              <div className="flex-1 overflow-auto">{children}</div>
             </div>
           </ToastProvider>
         </ClientProviders>

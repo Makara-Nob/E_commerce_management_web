@@ -9,17 +9,28 @@ export async function loginService(credentials: LoginCredentials) {
   try {
     const response = await axiosClient.post("/api/v1/auth/login", credentials);
 
-    const userData = response.data.data;
+    const apiResponse = response.data.data;
+    const { token, user } = apiResponse;
+
+    const userData = {
+      accessToken: token,
+      userId: user.id.toString(),
+      userIdentifier: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      userType: user.role,
+      roles: user.roles,
+    };
 
     storeToken(userData.accessToken);
     storeUserInfo({
-      userId: userData.userId || "",
-      userIdentifier: userData.userIdentifier || "",
-      profileImageUrl: userData.profileImageUrl || "",
-      email: userData.email || "",
-      fullName: userData.fullName || "",
-      businessId: userData.businessId || "",
-      userType: userData.userType || "",
+      userId: userData.userId,
+      userIdentifier: userData.userIdentifier,
+      profileImageUrl: "", // Missing from new API response
+      email: userData.email,
+      fullName: userData.fullName,
+      businessId: "", // Missing from new API response
+      userType: userData.userType,
     });
     storeRoles(userData.roles);
 
@@ -35,7 +46,7 @@ export async function loginService(credentials: LoginCredentials) {
 
 export async function getProfileService() {
   try {
-    const response = await axiosClientWithAuth.get("/api/v1/users/profile");
+    const response = await axiosClientWithAuth.get("/api/v1/user/profile");
     return response.data.data;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.message) {

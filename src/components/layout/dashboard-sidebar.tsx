@@ -78,7 +78,7 @@ export function DashboardSidebar({ isOpen, onToggle }: SidebarProps) {
                 className={cn(
                   "w-full justify-start hover:bg-primary/10 hover:text-primary rounded relative",
                   isActive &&
-                    "bg-primary/15 text-primary font-medium border-l-2 border-primary"
+                  "bg-primary/15 text-primary font-medium border-l-2 border-primary"
                 )}
                 onClick={() =>
                   route.section && !isCollapsed && toggleSection(route.section)
@@ -130,7 +130,7 @@ export function DashboardSidebar({ isOpen, onToggle }: SidebarProps) {
                         className={cn(
                           "relative w-full justify-start hover:bg-primary/10 hover:text-primary pl-6 rounded z-20 border-l border-transparent hover:border-l-primary/30 transition-all duration-200",
                           pathname === subroute.href &&
-                            "bg-primary/15 text-primary font-medium border-l-2 border-primary shadow-sm"
+                          "bg-primary/15 text-primary font-medium border-l-2 border-primary shadow-sm"
                         )}
                       >
                         <Link
@@ -156,7 +156,7 @@ export function DashboardSidebar({ isOpen, onToggle }: SidebarProps) {
             className={cn(
               "w-full justify-start hover:bg-primary/10 hover:text-primary rounded",
               pathname === route.href &&
-                "bg-primary/15 text-primary font-medium border-l-2 border-primary"
+              "bg-primary/15 text-primary font-medium border-l-2 border-primary"
             )}
           >
             <Link
@@ -212,7 +212,7 @@ export function DashboardSidebar({ isOpen, onToggle }: SidebarProps) {
               </div>
               <div className="flex flex-col">
                 <span className="text-foreground font-bold text-sm leading-tight tracking-tight">
-                  Menu Scanner
+                  Nara
                 </span>
                 <span className="text-muted-foreground text-xs font-medium tracking-wide">
                   Dashboard

@@ -31,4 +31,6 @@ export interface UserModel {
   notes: string;
   businessId: string;
   businessName: string;
+  telegramNotificationsEnabled?: boolean;
+  hasTelegramLinked?: boolean;
 }

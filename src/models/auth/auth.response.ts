@@ -1,14 +1,15 @@
 export interface UserAuthResponse {
-  accessToken?: string;
-  tokenType?: string;
-  userId?: string;
-  userIdentifier?: string;
-  email?: string;
-  fullName?: string;
-  profileImageUrl?: string;
-  userType?: string;
-  roles?: string[];
-  businessId?: string;
-  businessName?: string;
-  welcomeMessage?: string;
+  token: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+    fullName: string;
+    role: string;
+    active: boolean;
+    position: string;
+    status: string;
+    userPermission: string;
+    roles: string[];
+  };
 }

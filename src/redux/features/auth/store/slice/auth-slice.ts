@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Auth Feature - Redux Slice
  * Manages auth state: user, profile, loading, errors
  */
@@ -70,28 +70,43 @@ const authSlice = createSlice({
       })
       .addCase(loginService.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
-        state.isAuthenticated = !!action.payload.accessToken;
+        
+        // Map the new API structure to our flat state structure
+        const apiResponse = action.payload; // This is { token, user }
+        const { token, user } = apiResponse;
+
+        const mappedUser = {
+          accessToken: token,
+          userId: user.id.toString(),
+          userIdentifier: user.username,
+          email: user.email,
+          fullName: user.fullName,
+          userType: user.role,
+          roles: user.roles,
+        };
+
+        state.user = mappedUser;
+        state.isAuthenticated = !!mappedUser.accessToken;
 
         // Store authentication data in local storage (side effects)
-        if (action.payload.accessToken) {
-          storeToken(action.payload.accessToken);
+        if (mappedUser.accessToken) {
+          storeToken(mappedUser.accessToken);
         }
 
-        if (action.payload) {
+        if (mappedUser) {
           storeUserInfo({
-            userId: action.payload.userId || "",
-            userIdentifier: action.payload.userIdentifier || "",
-            profileImageUrl: action.payload.profileImageUrl || "",
-            email: action.payload.email || "",
-            fullName: action.payload.fullName || "",
-            businessId: action.payload.businessId || "",
-            userType: action.payload.userType || "",
+            userId: mappedUser.userId || "",
+            userIdentifier: mappedUser.userIdentifier || "",
+            profileImageUrl: "",
+            email: mappedUser.email || "",
+            fullName: mappedUser.fullName || "",
+            businessId: "",
+            userType: mappedUser.userType || "",
           });
         }
 
-        if (action.payload.roles) {
-          storeRoles(action.payload.roles);
+        if (mappedUser.roles) {
+          storeRoles(mappedUser.roles);
         }
       })
       .addCase(loginService.rejected, (state, action) => {

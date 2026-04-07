@@ -129,6 +129,9 @@ export const showToast = {
   },
 };
 
+// Global alias for simpler usage
+export const AppToast = showToast.custom;
+
 // ============================================
 // INDIVIDUAL TOAST COMPONENT
 // ============================================
