@@ -1,43 +1,46 @@
+/**
+ * User Request Models - Redux Features
+ * STRICT ALIGNMENT with Backend (User.ts)
+ */
+
+export interface CreateUserRequest {
+  username: string; // backend: username
+  email: string;
+  password: string;
+  fullName: string; // backend: fullName
+  phone: string; // backend: phone
+  profileUrl?: string; // backend: profileUrl
+  roles: string[];
+  status?: "ACTIVE" | "INACTIVE" | "SUSPENDED"; // backend: status
+  position?: string;
+  address?: string;
+  notes?: string;
+  businessId?: string;
+}
+
 export interface UpdateUserRequest {
   id?: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  profileImageUrl?: string;
-  accountStatus?: string;
-  businessId?: string;
+  fullName?: string; // backend: fullName
+  phone?: string; // backend: phone
+  profileUrl?: string; // backend: profileUrl
+  status?: "ACTIVE" | "INACTIVE" | "SUSPENDED"; // backend: status
   roles?: string[];
   position?: string;
   address?: string;
   notes?: string;
-}
-
-export interface CreateUserRequest {
-  userIdentifier: string;
-  email?: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  profileImageUrl?: string;
-  userType: string;
   businessId?: string;
-  roles: string[];
-  position?: string;
-  address?: string;
-  notes?: string;
-  accountStatus?: string;
 }
 
 export interface AllUserRequest {
   search?: string;
-  accountStatus?: string[];
-  roles?: string[];
-  userTypes?: string[];
+  status?: string; // backend: const status = body.status || '';
   pageNo?: number;
   pageSize?: number;
-  sortBy?: string;
-  sortDirection?: string;
+}
+
+export interface AdminResetPasswordRequest {
+  userId: string | number;
+  newPassword: string;
 }
 
 export interface UpdateUserParams {

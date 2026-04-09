@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { CategoryModel } from "@/models/dashboard/master-data/category/category.model";
 import { dateTimeFormat } from "@/utils/date/date-time-format";
+import { getAssetUrl } from "@/utils/common/common";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
@@ -57,11 +58,7 @@ export function CategoryDetailModal({
             {category.imageUrl ? (
               <div className="relative w-full h-48 rounded-xl overflow-hidden border bg-muted/50 shadow-inner group">
                 <Image
-                  src={
-                    category.imageUrl.startsWith("http")
-                      ? category.imageUrl
-                      : `${process.env.NEXT_PUBLIC_API_BASE_URL}${category.imageUrl}`
-                  }
+                  src={getAssetUrl(category.imageUrl)}
                   alt={category.name}
                   fill
                   className="object-contain transition-transform duration-500 group-hover:scale-105"

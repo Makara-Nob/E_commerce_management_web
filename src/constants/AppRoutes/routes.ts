@@ -6,8 +6,10 @@ import {
   Users,
   LucideIcon,
   Database,
-  DollarSign,
+  ImagePlus,
+  Truck,
 } from "lucide-react";
+
 
 export const ROUTES = {
   AUTH: {
@@ -15,31 +17,35 @@ export const ROUTES = {
   },
   DASHBOARD: {
     INDEX: "/admin",
-    USERS: "/admin/platform-users",
     MESSAGES: "/admin/messages",
     CALENDAR: "/admin/calendar",
     SETTINGS: "/admin/settings",
     SECURITY: "/admin/security",
     NOTIFICATIONS: "/admin/notifications",
-    USER_MANAGEMENT: "/admin/users/manage",
+    USERS: "/admin/users", // Unified User Management
     USER_ROLES: "/admin/users/roles",
     PROFILE: "/admin/profile",
     BUSINESS: "/admin/business",
     NEW_OWNER: "/admin/new-owner",
     MANAGE_BUSINESS: "/admin/manage-business",
     SUBSCRIPTION_PLAN: "/admin/subscription-plan",
-    BUSINESS_USER: "/admin/business-users",
-    BUSINESS_OWNER: "/admin/business-owner",
     MY_BUSINESS: "/admin/my-business",
     SUBSCRIPTION: "/admin/subscription",
     MY_SUBSCRIPTION: "/admin/my-subscription",
     EXCHANGE_RATE: "/admin/exchange-rate",
     PAYMENT: "/admin/payment",
-    USERS_BUSINESS: "/admin/users",
-    CUSTOMER_USER: "/admin/customer-user",
     PRODUCTS: "/admin/products",
+    PRODUCT_NEW: "/admin/products/new",
+    PRODUCT_DETAIL: (id: string) => `/admin/products/${id}`,
+    PRODUCT_EDIT: (id: string) => `/admin/products/${id}/edit`,
     CATEGORIES: "/admin/categories",
+    BRANDS: "/admin/brands",
+    SUPPLIERS: "/admin/suppliers",
+    BANNERS: "/admin/banners",
+    PROMOTIONS: "/admin/promotions",
+    ORDERS: "/admin/shipping",
   },
+
 } as const;
 
 type Subroute = {
@@ -71,18 +77,6 @@ export const sidebarItems: SidebarItem[] = [
         title: "Business",
         href: ROUTES.DASHBOARD.BUSINESS,
       },
-      // {
-      //   title: "Subscription Plan",
-      //   href: ROUTES.DASHBOARD.SUBSCRIPTION_PLAN,
-      // },
-      // {
-      //   title: "Subscriptions",
-      //   href: ROUTES.DASHBOARD.SUBSCRIPTION,
-      // },
-      // {
-      //   title: "Exchange Rates ",
-      //   href: ROUTES.DASHBOARD.EXCHANGE_RATE,
-      // },
       {
         title: "Products",
         href: ROUTES.DASHBOARD.PRODUCTS,
@@ -91,45 +85,29 @@ export const sidebarItems: SidebarItem[] = [
         title: "Categories",
         href: ROUTES.DASHBOARD.CATEGORIES,
       },
-      // {
-      //   title: "Payment",
-      //   href: ROUTES.DASHBOARD.PAYMENT,
-      // },
-    ],
-  },
-  {
-    title: "Platform User",
-    section: "Platform Users",
-    icon: Users,
-    subroutes: [
       {
-        title: "Users",
-        href: ROUTES.DASHBOARD.USERS,
+        title: "Brands",
+        href: ROUTES.DASHBOARD.BRANDS,
+      },
+      {
+        title: "Suppliers",
+        href: ROUTES.DASHBOARD.SUPPLIERS,
+      },
+      {
+        title: "Banners",
+        href: ROUTES.DASHBOARD.BANNERS,
+      },
+      {
+        title: "Promotions",
+        href: ROUTES.DASHBOARD.PROMOTIONS,
       },
     ],
-  },
 
-  {
-    title: "Business User",
-    section: "Business User",
-    icon: Users,
-    subroutes: [
-      {
-        title: "Users",
-        href: ROUTES.DASHBOARD.BUSINESS_USER,
-      },
-    ],
   },
   {
-    title: "Customer User",
-    section: "Customer Users",
+    title: "Users",
+    href: ROUTES.DASHBOARD.USERS,
     icon: Users,
-    subroutes: [
-      {
-        title: "customers",
-        href: ROUTES.DASHBOARD.CUSTOMER_USER,
-      },
-    ],
   },
   {
     title: "Messages",

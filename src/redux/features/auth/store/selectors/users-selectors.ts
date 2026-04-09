@@ -50,6 +50,7 @@ export const selectPagination = createSelector(
   [selectUserState, selectUsers],
   (state, data) => ({
     currentPage: state.filters.pageNo || 1,
+    pageSize: data?.pageSize || 10,
     totalPages: data?.totalPages || 1,
     totalElements: data?.totalElements || 0,
     hasNext: data?.hasNext || false,

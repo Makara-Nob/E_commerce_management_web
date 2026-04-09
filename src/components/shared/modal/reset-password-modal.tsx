@@ -1,279 +1,159 @@
 "use client";
 
-import { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
-  AlertTriangle,
-  CheckCircle2,
-  RotateCcw,
-  User,
-  Key,
-  Shield,
-  Copy,
-  Eye,
-  EyeOff,
-  Loader2,
-} from "lucide-react";
-import { toast } from "sonner";
-import { AdminChangePasswordService } from "@/services/dashboard/user/plateform-user/plateform-user.service";
-import { AppDefault } from "@/constants/AppResource/default/default";
-import { ScrollArea } from "@/components/ui/scroll-area";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { KeyRound, Eye, EyeOff, Loader2 } from "lucide-react";
+import { UserModel } from "@/redux/features/auth/store/models/response/users-response";
+
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Confirmation password is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 interface ResetPasswordModalProps {
-  userId?: string;
-  userName?: string;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm: (password: string) => Promise<void>;
+  user: UserModel | null;
+  isSubmitting?: boolean;
 }
 
-export default function ResetPasswordModal({
-  userId,
+export function ResetPasswordModal({
   isOpen,
-  userName,
   onClose,
+  onConfirm,
+  user,
+  isSubmitting = false,
 }: ResetPasswordModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const defaultPassword = AppDefault.RESET_PASSWORD;
+  const [showPassword, setShowPassword] = React.useState(false);
 
-  const onReset = async () => {
-    if (!userId) {
-      toast.error("User ID missing");
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      await AdminChangePasswordService({
-        userId: userId,
-        newPassword: defaultPassword,
-        confirmPassword: defaultPassword,
-      });
-      setShowSuccess(true);
-      toast.success("Password reset successfully");
-    } catch (error) {
-      console.error("Password reset failed:", error);
-      toast.error("Reset failed. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const form = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (values: ResetPasswordFormValues) => {
+    await onConfirm(values.password);
+    form.reset();
   };
-
-  const handleClose = () => {
-    setShowSuccess(false);
-    setShowPassword(false);
-    onClose();
-  };
-
-  const copyPassword = async () => {
-    try {
-      await navigator.clipboard.writeText(defaultPassword);
-      toast.success("Password copied to clipboard");
-    } catch (error) {
-      console.error("Failed to copy password:", error);
-      toast.error("Failed to copy password");
-    }
-  };
-
-  if (showSuccess) {
-    return (
-      <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-md">
-          <div className="text-center space-y-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
-            </div>
-
-            <div className="space-y-2">
-              <DialogTitle className="text-xl font-semibold text-gray-900">
-                Password Reset Complete!
-              </DialogTitle>
-              <DialogDescription className="text-gray-600">
-                The user's password has been successfully reset to the default
-                password.
-              </DialogDescription>
-            </div>
-
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <Shield className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div className="text-left">
-                  <p className="text-sm font-medium text-green-800">
-                    Security Notice
-                  </p>
-                  <p className="text-sm text-green-700">
-                    User should change password on next login
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <Button onClick={handleClose} className="w-full">
-              Got it
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl h-[90vh] p-0 gap-0 flex flex-col">
-        {/* Header */}
-        <DialogHeader className="px-6 py-4 border-b bg-muted/30 flex-shrink-0">
-          <div className="flex items-center gap-4 pr-8">
-            <div className="p-2 bg-yellow-100 rounded-full">
-              <AlertTriangle className="h-5 w-5 text-yellow-600" />
-            </div>
-            <div className="flex-1">
-              <DialogTitle className="text-xl font-semibold">
-                Reset User Password
-              </DialogTitle>
-              <DialogDescription className="text-base text-muted-foreground">
-                This will reset the user's password to the default value.
-                They'll need to change it on their next login.
-              </DialogDescription>
-            </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <div className="flex items-center gap-2 text-primary mb-2">
+            <KeyRound className="h-5 w-5" />
+            <DialogTitle>Reset Password</DialogTitle>
           </div>
+          <DialogDescription>
+            Change password for{" "}
+            <span className="font-semibold text-foreground">
+              {user?.fullName || user?.username || "this user"}
+            </span>
+            . Security protocols require a minimum of 6 characters.
+          </DialogDescription>
         </DialogHeader>
 
-        {/* Content */}
-        <ScrollArea className="flex-1 min-h-0">
-          <div className="p-6">
-            <div className="space-y-6">
-              {/* User Information Section */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-blue-700">
-                      Target User
-                    </Label>
-                    <p className="text-sm text-blue-900 font-medium">
-                      {userName || "Unknown User"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center">
-                    <Key className="w-5 h-5" />
-                  </div>
-                  <Label className="text-sm font-medium text-gray-700">
-                    Default Password
-                  </Label>
-                </div>
-
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    value={defaultPassword}
-                    readOnly
-                    className="pr-20 font-mono bg-gray-50 border-gray-200"
-                  />
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={copyPassword}
-                      className="h-8 w-8 p-0 hover:bg-gray-200"
-                      title="Copy password"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Warning Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-1 h-6 bg-red-600 rounded-full"></div>
-                  <h3 className="text-lg font-semibold text-foreground">
-                    Important Notice
-                  </h3>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium text-yellow-800">
-                        This action cannot be undone
-                      </p>
-                      <p className="text-sm text-yellow-700 mt-1">
-                        The user will be logged out of all devices and must use
-                        the new password to sign in.
-                      </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>New Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        className="pr-10"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ScrollArea>
-
-        {/* Footer */}
-        <div className="flex justify-between items-center p-6 border-t bg-muted/30 flex-shrink-0">
-          <div className="text-sm text-muted-foreground">
-            {isSubmitting ? "Resetting password..." : "Ready to reset password"}
-          </div>
-          <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              onClick={onReset}
-              disabled={isSubmitting}
-              variant="destructive"
-              className="min-w-[140px]"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Resetting...
-                </>
-              ) : (
-                "Reset Password"
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </Button>
-          </div>
-        </div>
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Update Password
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

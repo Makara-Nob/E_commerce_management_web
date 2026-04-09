@@ -36,3 +36,13 @@ export const indexDisplay = (
 ) => {
   return ((pageNo || 1) - 1) * (pageSize || 10) + (index || 1);
 };
+
+export function getAssetUrl(url?: string | null): string {
+  if (!url) return "";
+  if (url.startsWith("http") || url.startsWith("data:")) return url;
+  
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  // Ensure we don't have double slashes
+  const cleanUrl = url.startsWith("/") ? url : `/${url}`;
+  return `${baseUrl}${cleanUrl}`;
+}

@@ -1,0 +1,21 @@
+src/components/shared/modal/product-detail-modal.tsx(219,16): error TS17008: JSX element 'TabsContent' has no corresponding closing tag.
+src/components/shared/modal/product-detail-modal.tsx(257,93): error TS1127: Invalid character.
+src/components/shared/modal/product-detail-modal.tsx(257,116): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(266,48): error TS1127: Invalid character.
+src/components/shared/modal/product-detail-modal.tsx(266,117): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(266,118): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/components/shared/modal/product-detail-modal.tsx(266,138): error TS17002: Expected corresponding JSX closing tag for 'div'.
+src/components/shared/modal/product-detail-modal.tsx(273,25): error TS1005: ')' expected.
+src/components/shared/modal/product-detail-modal.tsx(274,24): error TS1005: ':' expected.
+src/components/shared/modal/product-detail-modal.tsx(274,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(280,20): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(282,17): error TS17002: Expected corresponding JSX closing tag for 'Tabs'.
+src/components/shared/modal/product-detail-modal.tsx(294,80): error TS1127: Invalid character.
+src/components/shared/modal/product-detail-modal.tsx(312,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(312,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/shared/modal/product-detail-modal.tsx(322,13): error TS17002: Expected corresponding JSX closing tag for 'DialogContent'.
+src/components/shared/modal/product-detail-modal.tsx(323,11): error TS17002: Expected corresponding JSX closing tag for 'Dialog'.
+src/components/shared/modal/product-detail-modal.tsx(325,9): error TS1005: ')' expected.
+src/components/shared/modal/product-detail-modal.tsx(339,7): error TS1128: Declaration or statement expected.
+src/components/shared/modal/product-detail-modal.tsx(340,5): error TS1109: Expression expected.
+src/components/shared/modal/product-detail-modal.tsx(341,3): error TS1109: Expression expected.

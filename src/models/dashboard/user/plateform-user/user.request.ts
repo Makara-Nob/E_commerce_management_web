@@ -1,8 +1,7 @@
 export interface AllUserRequest {
   search?: string;
-  accountStatus?: string[];
+  status?: string[];
   roles?: string[];
-  userTypes?: string[];
   pageNo?: number;
   pageSize?: number;
   sortBy?: string;
@@ -10,34 +9,31 @@ export interface AllUserRequest {
 }
 
 export interface CreateUserRequest {
-  userIdentifier: string;
-  email?: string;
+  username: string; // backend: username
+  email: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  profileImageUrl?: string;
-  userType: string;
-  businessId?: string;
+  fullName: string; // backend: fullName
+  phone: string; // backend: phone
+  profileUrl?: string; // backend: profileUrl
   roles: string[];
+  status?: "ACTIVE" | "INACTIVE" | "SUSPENDED"; // backend: status
   position?: string;
   address?: string;
   notes?: string;
-  accountStatus?: string;
+  businessId?: string;
 }
 
 export interface UpdateUserRequest {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  profileImageUrl?: string;
-  accountStatus?: string;
-  businessId?: string;
+  id: string;
+  fullName?: string; // backend: fullName
+  phone?: string; // backend: phone
+  profileUrl?: string; // backend: profileUrl
+  status?: "ACTIVE" | "INACTIVE" | "SUSPENDED"; // backend: status
   roles?: string[];
   position?: string;
   address?: string;
   notes?: string;
+  businessId?: string;
 }
 
 export interface ChangePasswordByAdminModel {

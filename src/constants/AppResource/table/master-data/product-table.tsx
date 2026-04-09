@@ -9,7 +9,7 @@ import { indexDisplay } from "@/utils/common/common";
 import { dateTimeFormat } from "@/utils/date/date-time-format";
 import { Edit, Eye, Trash, Package, Layers, Link as LinkIcon, Percent } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { ImageCell } from "@/components/shared/common/image-cell";
 
 interface ProductTableHandlers {
   handleEditProduct: (product: ProductModel) => void;
@@ -43,41 +43,17 @@ export const createProductTableColumns = ({
       key: "name",
       label: "Product Name",
       className: "min-w-[200px]",
-      render: (item) => {
-        const [loading, setLoading] = useState(true);
-        const [error, setError] = useState(false);
-
-        return (
-          <div className="flex items-center gap-2">
-            {item.imageUrl && !error ? (
-              <div className="relative h-8 w-8">
-                {loading && (
-                  <div className="absolute inset-0 animate-pulse rounded-md bg-muted" />
-                )}
-
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  className={`h-8 w-8 rounded-md object-cover ${
-                    loading ? "opacity-0" : "opacity-100"
-                  }`}
-                  onLoad={() => setLoading(false)}
-                  onError={() => {
-                    setLoading(false);
-                    setError(true);
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                <Package className="h-4 w-4" />
-              </div>
-            )}
-
-            <span className="font-medium">{item.name}</span>
-          </div>
-        );
-      },
+      render: (item) => (
+        <div className="flex items-center gap-2">
+          <ImageCell
+            src={item.imageUrl}
+            alt={item.name}
+            size="sm"
+            fallbackIcon={Package}
+          />
+          <span className="font-medium">{item.name}</span>
+        </div>
+      ),
     },
     {
       key: "sku",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { useDebounce } from "@/utils/debounce/debounce";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -22,28 +23,12 @@ import {
   setSearchFilter,
 } from "@/redux/features/master-data/store/slice/product-slice";
 import { AppToast } from "@/components/shared/common/app-toast";
-import { ProductFormModal } from "@/components/shared/modal/product-form-modal";
-import { ProductDetailModal } from "@/components/shared/modal/product-detail-modal";
 
 export default function ProductsPage() {
   // Redux state
-  const {
-    products,
-    isLoading,
-    filters,
-    pagination,
-    operations,
-    dispatch,
-  } = useProductsState();
-
-  // Local UI state
-  const [detailModalState, setDetailModalState] = useState<{
-    isOpen: boolean;
-    product: ProductModel | null;
-  }>({
-    isOpen: false,
-    product: null,
-  });
+  const { products, isLoading, filters, pagination, operations, dispatch } =
+    useProductsState();
+  const router = useRouter();
 
   const [deleteState, setDeleteState] = useState<{
     isOpen: boolean;
@@ -51,14 +36,6 @@ export default function ProductsPage() {
   }>({
     isOpen: false,
     product: null,
-  });
-
-  const [createModalState, setCreateModalState] = useState<{ 
-    isOpen: boolean; 
-    product: ProductModel | null; 
-  }>({ 
-    isOpen: false, 
-    product: null 
   });
 
   const searchParams = useSearchParams();
@@ -94,7 +71,7 @@ export default function ProductsPage() {
         pageNo: filters.pageNo,
         pageSize: pagination.pageSize,
         search: debouncedSearch,
-      })
+      }),
     );
   }, [dispatch, debouncedSearch, filters.pageNo, pagination.pageSize]);
 
@@ -111,18 +88,12 @@ export default function ProductsPage() {
 
   // Action handlers
   const handleEditProduct = useCallback((product: ProductModel) => {
-    setCreateModalState({
-      isOpen: true,
-      product: product,
-    });
-  }, []);
+    router.push(ROUTES.DASHBOARD.PRODUCT_EDIT(String(product.id)));
+  }, [router]);
 
   const handleViewProductDetail = useCallback((product: ProductModel) => {
-    setDetailModalState({
-      isOpen: true,
-      product: product,
-    });
-  }, []);
+    router.push(ROUTES.DASHBOARD.PRODUCT_DETAIL(String(product.id)));
+  }, [router]);
 
   const handleDeleteProduct = useCallback((product: ProductModel) => {
     setDeleteState({
@@ -131,14 +102,13 @@ export default function ProductsPage() {
     });
   }, []);
 
-
   const refreshProducts = () => {
     dispatch(
       fetchAllProducts({
         pageNo: filters.pageNo,
         pageSize: pagination.pageSize,
         search: debouncedSearch,
-      })
+      }),
     );
   };
 
@@ -148,7 +118,7 @@ export default function ProductsPage() {
       handleViewProductDetail,
       handleDelete: handleDeleteProduct,
     }),
-    [handleEditProduct, handleViewProductDetail, handleDeleteProduct]
+    [handleEditProduct, handleViewProductDetail, handleDeleteProduct],
   );
 
   const columns = useMemo(
@@ -168,7 +138,7 @@ export default function ProductsPage() {
         } as any,
         handlers: tableHandlers,
       }),
-    [products, pagination, tableHandlers]
+    [products, pagination, tableHandlers],
   );
 
   const closeDeleteModal = () => {
@@ -183,7 +153,7 @@ export default function ProductsPage() {
 
     try {
       await dispatch(deleteProduct(deleteState.product.id)).unwrap();
-      
+
       AppToast({
         type: "success",
         message: `Product "${deleteState.product.name}" deleted successfully`,
@@ -215,9 +185,7 @@ export default function ProductsPage() {
           buttonIcon={<Plus className="w-4 h-4" />}
           buttonText="New Product"
           onSearchChange={handleSearchChange}
-          openModal={() => {
-            setCreateModalState({ isOpen: true, product: null });
-          }}
+          openModal={() => router.push(ROUTES.DASHBOARD.PRODUCT_NEW)}
         />
 
         <div className="space-y-4">
@@ -242,20 +210,6 @@ export default function ProductsPage() {
         description="Are you sure you want to delete this product? This action cannot be undone."
         itemName={deleteState.product?.name || "---"}
         isSubmitting={operations.isDeleting}
-      />
-
-
-      <ProductDetailModal
-        isOpen={detailModalState.isOpen}
-        onClose={() => setDetailModalState({ isOpen: false, product: null })}
-        product={detailModalState.product}
-      />
-
-      <ProductFormModal
-        isOpen={createModalState.isOpen}
-        onClose={() => setCreateModalState({ isOpen: false, product: null })}
-        onSuccess={refreshProducts}
-        product={createModalState.product}
       />
     </div>
   );

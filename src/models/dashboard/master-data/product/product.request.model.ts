@@ -9,6 +9,7 @@ export interface ProductVariantRequest {
   optionValues: string[];     // the combination e.g. ["M", "Red"]
   stockQuantity: number;
   additionalPrice: number;
+  imageUrl?: string;
   discountType?: 'PERCENTAGE' | 'FIXED';
   discountValue?: number;
 }
@@ -27,6 +28,7 @@ export interface CreateProductRequest {
   discountType?: 'PERCENTAGE' | 'FIXED';
   discountValue?: number;
   imageUrl?: string;
+  images?: string[];
   status?: "ACTIVE" | "INACTIVE";
   options?: ProductOption[];
   variants?: ProductVariantRequest[];

@@ -1,0 +1,22 @@
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(59,8): error TS2307: Cannot find module '@/constants/AppResource/status/payment' or its corresponding type declarations.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(312,9): error TS2322: Type '"celebration"' is not assignable to type 'ToastType | undefined'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(343,14): error TS2339: Property 'isFree' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(864,39): error TS2339: Property 'isFree' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(875,37): error TS2339: Property 'pricingDisplay' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(876,38): error TS2339: Property 'pricingDisplay' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(878,43): error TS2339: Property 'pricingDisplay' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(926,39): error TS2339: Property 'pricingDisplay' does not exist on type 'SubscriptionPlanModel'.
+src/app/(dashboard)/admin/(business-user)/new-owner/page.tsx(959,62): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/app/(dashboard)/admin/(master-data)/business/page copy.tsx(234,9): error TS2304: Cannot find name 'AppToast'.
+src/app/(dashboard)/admin/(master-data)/business/page copy.tsx(267,9): error TS2304: Cannot find name 'AppToast'.
+src/app/(dashboard)/admin/(master-data)/business/page copy.tsx(324,12): error TS2739: Type '{ data: BusinessModel[]; columns: TableColumn<BusinessModel>[]; loading: boolean; emptyMessage: string; getRowKey: (business: BusinessModel) => string; }' is missing the following properties from type 'DataTableWithPaginationProps<BusinessModel>': currentPage, totalPages, onPageChange
+src/components/dashboard/master-data/subscription-plan/subscription-plan-filter.tsx(58,48): error TS2322: Type 'import("C:/Users/makkara.nob/Desktop/project/Nara/E-commerce_web/src/constants/AppResource/status/status").SubscriptionPlanStatus | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/components/shared/combo-box/combobox-business.tsx(296,41): error TS2339: Property 'totalCustomers' does not exist on type 'BusinessModel'.
+src/components/shared/dialog/dialog-help.tsx(13,26): error TS2307: Cannot find module '@/constants/icons/icon' or its corresponding type declarations.
+src/components/ui/sidebar.tsx(8,29): error TS2307: Cannot find module '@/app/redux/store/use-mobile' or its corresponding type declarations.
+src/components/ui/toaster.tsx(3,26): error TS2307: Cannot find module '@/hooks/use-toast' or its corresponding type declarations.
+src/components/ui/toaster.tsx(18,31): error TS7031: Binding element 'id' implicitly has an 'any' type.
+src/components/ui/toaster.tsx(18,35): error TS7031: Binding element 'title' implicitly has an 'any' type.
+src/components/ui/toaster.tsx(18,42): error TS7031: Binding element 'description' implicitly has an 'any' type.
+src/components/ui/toaster.tsx(18,55): error TS7031: Binding element 'action' implicitly has an 'any' type.

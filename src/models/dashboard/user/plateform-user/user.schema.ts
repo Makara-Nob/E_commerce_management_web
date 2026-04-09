@@ -1,27 +1,30 @@
 import { z } from "zod";
 
+/**
+ * User Management - Validation Schema
+ * STRICT ALIGNMENT with Backend (User.ts)
+ */
+
 // Common fields used in both create and update
 const commonFields = {
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  position: z.string().optional(),
-  address: z.string().optional(),
-  accountStatus: z.string().min(1, "Account status is required"),
+  fullName: z.string().min(1, "Full name is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  position: z.string().optional().or(z.literal("")),
+  address: z.string().optional().or(z.literal("")),
+  status: z.enum(["ACTIVE", "INACTIVE", "SUSPENDED"]),
   roles: z.array(z.string()).min(1, "At least one role is required"),
-  notes: z.string().optional(),
+  notes: z.string().optional().or(z.literal("")),
 };
 
-// Create user schema - requires additional fields
+// Create user schema
 export const createUserSchema = z.object({
   ...commonFields,
-  userIdentifier: z.string().min(1, "User identifier is required"),
+  username: z.string().min(1, "Username is required"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  userType: z.string().min(1, "User type is required"),
 });
 
-// Update user schema - only editable fields
+// Update user schema
 export const updateUserSchema = z.object({
   ...commonFields,
   id: z.string().min(1, "User ID is required"),
@@ -31,19 +34,18 @@ export const updateUserSchema = z.object({
 export type CreateUserPayload = z.infer<typeof createUserSchema>;
 export type UpdateUserPayload = z.infer<typeof updateUserSchema>;
 
-// Combined form data type (union of both with all fields optional for flexibility)
+// Combined form data type for the Unified Modal
 export type UserFormData = {
   id?: string;
-  userIdentifier?: string;
+  username?: string;
   email?: string;
   password?: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  userType?: string;
-  accountStatus?: string;
+  fullName?: string;
+  phone?: string;
+  status?: "ACTIVE" | "INACTIVE" | "SUSPENDED";
   roles?: string[];
   position?: string;
   address?: string;
   notes?: string;
+  profileUrl?: string;
 };
