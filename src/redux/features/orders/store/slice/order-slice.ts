@@ -39,7 +39,7 @@ const initialState: OrdersState = {
         pageNo: 1,
         pageSize: 10,
         search: "",
-        status: "ALL",
+        status: "PENDING_ACTION",
     },
     operations: {
         isUpdating: false,
@@ -94,11 +94,21 @@ const orderSlice = createSlice({
             })
             .addCase(updateOrderStatusService.fulfilled, (state, action) => {
                 state.operations.isUpdating = false;
-                // Update local status if found
-                const updatedOrder = action.meta.arg;
-                const index = state.orders.findIndex(o => o.id === updatedOrder.id);
+                
+                // Use the data returned from server if it exists, otherwise fallback to thunk arguments
+                const serverData = action.payload as any;
+                const argData = action.meta.arg;
+                
+                const orderId = serverData?.id || argData.id;
+                const newStatus = serverData?.status || argData.status;
+
+                const index = state.orders.findIndex(o => o.id.toString() === orderId.toString());
                 if (index !== -1) {
-                    state.orders[index].status = updatedOrder.status as any;
+                    state.orders[index].status = newStatus as any;
+                    // If server returned full data, update the whole object
+                    if (serverData && serverData.id) {
+                         state.orders[index] = { ...state.orders[index], ...serverData };
+                    }
                 }
             })
             .addCase(updateOrderStatusService.rejected, (state, action) => {

@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ShippingManagementPage() {
   const { 
@@ -71,6 +72,10 @@ export default function ShippingManagementPage() {
   useEffect(() => {
     dispatch(setSearchFilter(debouncedSearch));
   }, [debouncedSearch, dispatch]);
+
+  const handleStatusChange = (value: string) => {
+    dispatch(setStatusFilter(value));
+  };
 
   useEffect(() => {
     const pageParam = searchParams.get("pageNo");
@@ -144,16 +149,38 @@ export default function ShippingManagementPage() {
         />
 
         <div className="space-y-4">
-          <DataTableWithPagination
-            data={orders}
-            columns={tableColumns}
-            loading={isLoading}
-            emptyMessage="No orders matching your criteria were found."
-            getRowKey={(o) => o.id.toString()}
-            currentPage={pagination.currentPage}
-            totalPages={pagination.totalPages}
-            onPageChange={h => handlePageChange(h)}
-          />
+          <Tabs 
+            defaultValue={filters.status} 
+            value={filters.status}
+            onValueChange={handleStatusChange} 
+            className="w-full"
+          >
+            <div className="flex items-center justify-between mb-2">
+                <TabsList className="bg-muted/50">
+                    <TabsTrigger value="PENDING_ACTION" className="text-xs px-4">To Process</TabsTrigger>
+                    <TabsTrigger value="ALL" className="text-xs px-4">All Orders</TabsTrigger>
+                    <TabsTrigger value="CONFIRMED" className="text-xs px-4">Confirmed</TabsTrigger>
+                    <TabsTrigger value="SHIPPED" className="text-xs px-4">Shipped</TabsTrigger>
+                    <TabsTrigger value="DELIVERED" className="text-xs px-4 text-emerald-600">Delivered</TabsTrigger>
+                    <TabsTrigger value="CANCELLED" className="text-xs px-4 text-red-600">Cancelled</TabsTrigger>
+                </TabsList>
+                
+                <div className="text-[10px] text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                   Showing {filters.status === 'PENDING_ACTION' ? 'active orders only' : filters.status.toLowerCase() + ' orders'}
+                </div>
+            </div>
+
+            <DataTableWithPagination
+                data={orders}
+                columns={tableColumns}
+                loading={isLoading}
+                emptyMessage="No orders matching your criteria were found."
+                getRowKey={(o) => o.id.toString()}
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                onPageChange={h => handlePageChange(h)}
+            />
+          </Tabs>
         </div>
       </div>
 

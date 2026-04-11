@@ -6,10 +6,14 @@ import {
   Users,
   LucideIcon,
   Database,
-  ImagePlus,
+  LayoutGrid,
+  Tag,
   Truck,
+  Image,
+  Package,
+  Megaphone,
+  CaravanIcon,
 } from "lucide-react";
-
 
 export const ROUTES = {
   AUTH: {
@@ -22,7 +26,7 @@ export const ROUTES = {
     SETTINGS: "/admin/settings",
     SECURITY: "/admin/security",
     NOTIFICATIONS: "/admin/notifications",
-    USERS: "/admin/users", // Unified User Management
+    USERS: "/admin/users",
     USER_ROLES: "/admin/users/roles",
     PROFILE: "/admin/profile",
     BUSINESS: "/admin/business",
@@ -45,12 +49,12 @@ export const ROUTES = {
     PROMOTIONS: "/admin/promotions",
     ORDERS: "/admin/shipping",
   },
-
 } as const;
 
 type Subroute = {
   title: string;
   href: string;
+  icon?: LucideIcon;
 };
 
 type SidebarItem = {
@@ -74,40 +78,47 @@ export const sidebarItems: SidebarItem[] = [
     icon: Database,
     subroutes: [
       {
-        title: "Business",
-        href: ROUTES.DASHBOARD.BUSINESS,
-      },
-      {
-        title: "Products",
-        href: ROUTES.DASHBOARD.PRODUCTS,
-      },
-      {
         title: "Categories",
         href: ROUTES.DASHBOARD.CATEGORIES,
+        icon: LayoutGrid,
       },
       {
         title: "Brands",
         href: ROUTES.DASHBOARD.BRANDS,
+        icon: Tag,
       },
       {
         title: "Suppliers",
         href: ROUTES.DASHBOARD.SUPPLIERS,
+        icon: Truck,
       },
       {
         title: "Banners",
         href: ROUTES.DASHBOARD.BANNERS,
-      },
-      {
-        title: "Promotions",
-        href: ROUTES.DASHBOARD.PROMOTIONS,
+        icon: Image,
       },
     ],
-
   },
   {
     title: "Users",
     href: ROUTES.DASHBOARD.USERS,
     icon: Users,
+  },
+
+  {
+    title: "Product",
+    href: ROUTES.DASHBOARD.PRODUCTS,
+    icon: Package,
+  },
+  {
+    title: "Orders",
+    href: ROUTES.DASHBOARD.ORDERS,
+    icon: CaravanIcon,
+  },
+  {
+    title: "Promotions",
+    href: ROUTES.DASHBOARD.PROMOTIONS,
+    icon: Megaphone,
   },
   {
     title: "Messages",

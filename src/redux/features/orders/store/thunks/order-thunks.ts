@@ -14,7 +14,7 @@ export const fetchAllOrdersService = createAsyncThunk(
     async (params: FetchOrdersParams, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.post("/api/v1/admin/orders/fetch", params);
-            return response.data as OrderSearchResponse;
+            return response.data.data as OrderSearchResponse;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || "Failed to fetch orders");
         }
@@ -31,7 +31,7 @@ export const updateOrderStatusService = createAsyncThunk(
     async ({ id, status }: UpdateOrderStatusParams, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.put(`/api/v1/admin/orders/${id}/status`, { status });
-            return response.data;
+            return response.data.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || "Failed to update order status");
         }

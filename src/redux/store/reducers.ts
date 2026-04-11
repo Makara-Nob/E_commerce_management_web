@@ -12,6 +12,7 @@ import supplierReducer from "../features/master-data/store/slice/supplier-slice"
 import bannerReducer from "../features/banners/store/slice/banner-slice";
 import promotionReducer from "../features/promotions/store/slice/promotion-slice";
 import orderReducer from "../features/orders/store/slice/order-slice";
+import dashboardReducer from "../features/dashboard/store/slice/dashboard-slice";
 
 
 /**
@@ -28,5 +29,5 @@ export const reducers = {
   banners: bannerReducer,
   promotions: promotionReducer,
   orders: orderReducer,
-
+  dashboard: dashboardReducer,
 };
